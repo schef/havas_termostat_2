@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8" />
+	<title>WebSocket Test</title>
+	<script language = "javascript" type = "text/javascript">
+//https://www.tutorialspoint.com/websockets/websockets_send_receive_messages.htm
+//https://docs.python.org/2/library/simplehttpserver.html
+var wsUri = "ws://localhost:8765";
+
+function init() {
+	statusText = document.getElementById("status");
+	dateText = document.getElementById("date");
+	tempLeftText = document.getElementById("tempLeft");
+	tempRightText = document.getElementById("tempRight");
+	pumpText = document.getElementById("pump");
+	buttonButton = document.getElementById("buttonButton");
+	buttonButton.addEventListener("click", test);
+
+	test();
+	setInterval(function(){
+		test();
+	}, 1000);
+
+}
+
+function test()
+{
+	connect("date").then(function(msg) {
+		console.log(msg.data);
+		writeToScreen(dateText, '<span style = "color: blue;">Current date: ' + msg.data + '</span>');
+	}).catch(function(err) {
+		console.log("error");
+	});
+	connect("tempLeft").then(function(msg) {
+		console.log(msg.data);
+		writeToScreen(tempLeftText, '<span style = "color: red;">Temperature Left: ' + msg.data + '</span>');
+	}).catch(function(err) {
+		console.log("error");
+	});
+	connect("tempRight").then(function(msg) {
+		console.log(msg.data);
+		writeToScreen(tempRightText, '<span style = "color: green;">Temperature Right: ' + msg.data + '</span>');
+	}).catch(function(err) {
+		console.log("error");
+	});
+	connect("pump").then(function(msg) {
+		console.log(msg.data);
+		writeToScreen(pumpText, '<span style = "color: purple;">Pump: ' + msg.data + '</span>');
+	}).catch(function(err) {
+		console.log("error");
+	});
+	connect("test").then(function(msg) {
+		console.log(msg.data);
+		writeToScreen(statusText, '<span style = "color: black;">RESPONSE: ' + msg.data + '</span>');
+	}).catch(function(err) {
+		console.log("error");
+	});
+}
+
+function connect(message) {
+	return new Promise(function(resolve, reject) {
+		var server = new WebSocket(wsUri);
+		server.onopen = function() {
+			server.send(message);
+		};
+		server.onerror = function(err) {
+			reject(err);
+		};
+		server.onmessage = function(msg) {
+			resolve(msg);
+		};
+	});
+}
+
+function writeToScreen(item, message) {
+	item.innerHTML = message;
+}
+
+window.addEventListener("load", init, false);
+	</script>
+
+	<h2>WebSocket Test</h2>
+	<p id = "status"></p>
+	<p id = "date"></p>
+	<p id = "tempLeft"></p>
+	<p id = "tempRight"></p>
+	<p id = "pump"></p>
+	<button id = "buttonButton" type="button">Click Me!</button>
+</html>
