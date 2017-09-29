@@ -11,6 +11,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(ledPin, GPIO.OUT)
 GPIO.setup(relayPin, GPIO.OUT)
+setRelay(0)
+setLed(0)
 
 def test():
     print("LED on")
@@ -32,6 +34,7 @@ def setLed(status):
 def setRelay(status):
     global relayStatus
     global relayPin
+    status = !status
     if(status == relayStatus): return
     relayStatus = status
     if(status):
