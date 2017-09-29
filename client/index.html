@@ -5,7 +5,8 @@
 	<script language = "javascript" type = "text/javascript">
 //https://www.tutorialspoint.com/websockets/websockets_send_receive_messages.htm
 //https://docs.python.org/2/library/simplehttpserver.html
-var wsUri = "ws://localhost:8765";
+//var wsUri = "ws://localhost:8765";
+var wsUri = "ws://192.168.88.167:8765";
 
 function init() {
 	statusText = document.getElementById("status");
@@ -19,7 +20,7 @@ function init() {
 	test();
 	setInterval(function(){
 		test();
-	}, 1000);
+	}, 5000);
 
 }
 
